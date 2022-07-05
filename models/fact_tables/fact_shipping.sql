@@ -1,0 +1,45 @@
+{{ config(materialized='incremental',
+unique_key='loadsmart_id'
+) }}
+
+select
+loadsmart_id,
+lane_from_id,
+lane_to_id,
+quote_date_key,
+book_date_key,
+source_date_key,
+pickup_date_key,
+delivery_date_key,
+pickup_appointment_date_key,
+delivery_appointment_date_key,
+equipment_type_id,
+sourcing_channel_id,
+carrier_id,
+shipper_id,
+carrier_rating as carrier_rating_points,
+carrier_dropped_us_count as carrier_dropped_us_count,
+vip_carrier::boolean as is_vip_carrier,
+carrier_on_time_to_pickup::boolean as is_carrier_on_time_to_pickup,
+carrier_on_time_to_delivery::boolean as is_carrier_on_time_to_delivery,
+carrier_on_time_overall::boolean as is_carrier_on_time_overall,
+contracted_load::boolean as is_contracted_load,
+load_booked_autonomously::boolean as is_load_booked_autonomously,
+load_sourced_autonomously::boolean as is_load_sourced_autonomously,
+load_was_cancelled::boolean,
+has_mobile_app_tracking::boolean,
+has_macropoint_tracking::boolean,
+has_edi_tracking::boolean,
+
+extract(epoch from (book_date - quote_date)/60) as m_quote_book_minutes,
+extract(epoch from (source_date - book_date)/60) as m_book_source_minutes,
+extract(epoch from (pickup_date - source_date)/60) as m_source_pickup_minutes,
+extract(epoch from (delivery_date - pickup_date)/60) as m_pickup_delivery_minutes,
+extract(epoch from (pickup_date - pickup_appointment_time)/60) as m_pickup_late_time_minutes,
+extract(epoch from (delivery_date - delivery_appointment_time)/60) as m_delivery_late_time_minutes,
+book_price::decimal as m_book_price_usd,
+source_price::decimal as m_source_price_usd,
+pnl::decimal as m_pnl_usd,
+mileage::decimal as m_mileage
+
+from {{ ref('aux_table')}}
