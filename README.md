@@ -1,15 +1,9 @@
-Welcome to your new dbt project!
+Welcome to my dbt project!
 
-### Using the starter project
+### Info
 
-Try running the following commands:
-- dbt run
-- dbt test
+This project was built over the dbt "starter project".
 
+I have developed using Postgresql as database, that must be configured locally in order to run the dbt models.
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+You should know that all dimensions was built using dbt, except for dim_date, made using a sql script.
